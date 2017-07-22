@@ -20,5 +20,4 @@ class AppModule {
         return application
     }
 
-
 }

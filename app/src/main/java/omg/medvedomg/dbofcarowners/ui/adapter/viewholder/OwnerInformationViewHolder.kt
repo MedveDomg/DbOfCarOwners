@@ -7,4 +7,5 @@ import android.view.View
  * Created by medvedomg on 22.07.17.
  */
 class OwnerInformationViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+
 }
