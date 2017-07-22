@@ -7,6 +7,9 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import omg.medvedomg.labracodetestapp.di.DaggerAppComponent
 import javax.inject.Inject
+import timber.log.Timber
+
+
 
 /**
  * Created by medvedomg on 22.07.17.
@@ -18,6 +21,9 @@ class DbOfCarOwnersApp : Application(),HasActivityInjector{
 
     override fun onCreate() {
         super.onCreate()
+
+        //logging library
+        Timber.plant(Timber.DebugTree())
 
         DaggerAppComponent
                 .builder()
