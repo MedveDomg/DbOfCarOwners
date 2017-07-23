@@ -68,4 +68,8 @@ dependencies {
 
     //Logging
     compile 'com.jakewharton.timber:timber:4.5.1'
+
+    //Dialogs
+    compile 'com.afollestad.material-dialogs:core:0.9.3.0'
+
 }

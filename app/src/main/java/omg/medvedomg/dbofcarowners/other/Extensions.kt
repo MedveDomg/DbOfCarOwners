@@ -4,9 +4,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import com.squareup.picasso.Picasso
-import omg.medvedomg.dbofcarowners.mvp.model.models
+import omg.medvedomg.dbofcarowners.other.models.Car
 
 /**
  * Created by medvedomg on 04.07.17.
@@ -21,13 +19,20 @@ fun String.addHas(): String{
     return this.format("%s has:",this).toString()
 }
 
-fun List<models.Car>.getAllNamesInOneString(): String{
+fun List<Car>.getAllNamesInOneString(): String{
 
-    val bigString = StringBuilder()
+    var bigString = StringBuilder()
 
-    for (item in this) {
-        bigString.append(item.brand).append(", ")
+    this.listIterator()
+
+    val iterator = this.iterator()
+
+    for (i in this.indices) {
+        if (!TextUtils.isEmpty(this.get(i).brand)) {
+                bigString.append(this.get(i).brand).append(", ")
+        }
     }
 
-    return bigString.toString()
+    println(bigString.substring(0,bigString.length - 2).toString())
+    return bigString.substring(0,bigString.length - 2).toString()
 }

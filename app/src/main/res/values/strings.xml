@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">DbOfCarOwners</string>
+    <string name="add_owner">Add owner</string>
+    <string name="name">Name</string>
+    <string name="do_you_want_to_add_an_owner">Do you want to add an owner?</string>
+    <string name="first_car">First car</string>
+    <string name="second_car">Second car</string>
+    <string name="third_car">Third car</string>
+    <string name="save">save</string>
+    <string name="cancel">cancel</string>
 </resources>

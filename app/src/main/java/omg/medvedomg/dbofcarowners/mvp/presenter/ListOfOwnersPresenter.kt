@@ -1,8 +1,9 @@
 package omg.medvedomg.dbofcarowners.mvp.presenter
 
 import omg.medvedomg.dbofcarowners.mvp.model.DbHelper
-import omg.medvedomg.dbofcarowners.mvp.model.models
 import omg.medvedomg.dbofcarowners.mvp.view.ListOfOwnersView
+import omg.medvedomg.dbofcarowners.other.models.Car
+import omg.medvedomg.dbofcarowners.other.models.Owner
 import timber.log.Timber
 
 /**
@@ -12,12 +13,24 @@ class ListOfOwnersPresenter(var listOfOwnersView: ListOfOwnersView,
                             var dbHelper: DbHelper) : Presenter{
 
     fun getListOfOwners() {
-        if (dbHelper != null) {
-            Timber.d("dbHelper != null")
-        }
+        listOfOwnersView.showOwners(dbHelper.getAllOwners())
     }
 
-    fun setListOfOwners(owners: List<models.Owner>) {
+    fun setListOfOwners(owners: List<Owner>) {
         listOfOwnersView.showOwners(owners)
+    }
+
+    fun saveOwner(owner: Owner, cars: List<Car>){
+
+        for (item in cars) {
+            println(item.brand.toString())
+        }
+
+        println(owner.name)
+
+        dbHelper.createOwner(owner,cars)
+    }
+
+    fun getAllOwners() {
     }
 }

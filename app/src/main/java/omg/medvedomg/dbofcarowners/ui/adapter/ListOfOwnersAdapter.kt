@@ -3,8 +3,7 @@ package omg.medvedomg.dbofcarowners.ui.adapter
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import omg.medvedomg.dbofcarowners.mvp.model.models
-import omg.medvedomg.dbofcarowners.mvp.view.ListOfOwnersView
+import omg.medvedomg.dbofcarowners.other.models.Owner
 import omg.medvedomg.dbofcarowners.ui.adapter.viewholder.OwnerInformationViewHolder
 import timber.log.Timber
 
@@ -13,7 +12,7 @@ import timber.log.Timber
  */
 class ListOfOwnersAdapter(val context: Context) : RecyclerView.Adapter<OwnerInformationViewHolder>() {
 
-    private var owners: List<models.Owner>
+    private var owners: ArrayList<Owner>
 
     init {
         owners = ArrayList()
@@ -25,12 +24,17 @@ class ListOfOwnersAdapter(val context: Context) : RecyclerView.Adapter<OwnerInfo
 
     override fun onBindViewHolder(holder: OwnerInformationViewHolder, position: Int) {
         //TODO uncomment when make data available
-//        holder.bind(owners.get(position))
+        holder.bind(owners.get(position))
 
         holder.itemView.setOnClickListener({ Timber.d("click position: $position")})
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return owners.size
+    }
+
+    fun  updateOwners(owners: List<Owner>) {
+        this.owners.clear()
+        this.owners.addAll(owners)
     }
 }
