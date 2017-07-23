@@ -123,7 +123,7 @@ class DbHelper(context: Context, name: String, version: Int) : SQLiteOpenHelper(
 
                 var carList = getOwnerCarList(ownerId)
 
-                var owner = Owner(cursor.getString(cursor.getColumnIndex(OWNER_NAME)),carList)
+                var owner = Owner(ownerId,cursor.getString(cursor.getColumnIndex(OWNER_NAME)),carList)
 
                 ownerList.add(owner)
             } while (cursor.moveToNext())
@@ -158,6 +158,18 @@ class DbHelper(context: Context, name: String, version: Int) : SQLiteOpenHelper(
         db.close()
 
         return carList
+    }
+
+    fun  deleteOwner(owner: Owner) {
+        val db = this.writableDatabase
+
+        db.delete(OWNER_TABLE_NAME,"$OWNER_ID = ?", arrayOf(owner.id.toString()))
+
+        db.delete(CAR_TABLE_NAME,"$CAR_OWNER_ID = ?", arrayOf(owner.id.toString()))
+
+        db.close()
+
+        Timber.d("deleting success")
     }
 
 

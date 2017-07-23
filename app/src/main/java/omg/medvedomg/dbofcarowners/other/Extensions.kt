@@ -23,16 +23,11 @@ fun List<Car>.getAllNamesInOneString(): String{
 
     var bigString = StringBuilder()
 
-    this.listIterator()
-
-    val iterator = this.iterator()
-
     for (i in this.indices) {
         if (!TextUtils.isEmpty(this.get(i).brand)) {
                 bigString.append(this.get(i).brand).append(", ")
         }
     }
 
-    println(bigString.substring(0,bigString.length - 2).toString())
     return bigString.substring(0,bigString.length - 2).toString()
 }

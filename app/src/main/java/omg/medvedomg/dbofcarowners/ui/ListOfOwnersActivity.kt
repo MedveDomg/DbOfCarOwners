@@ -63,7 +63,7 @@ class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
         //set clicked on positive button
         dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener(View.OnClickListener {
 
-            var owner = Owner(dialog.view.etName?.text?.toString(),null)
+            var owner = Owner(null,dialog.view.etName?.text?.toString(),null)
 
             var carList: ArrayList<Car> = ArrayList()
 
@@ -84,13 +84,34 @@ class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
     }
 
     override fun showOwners(owners: List<Owner>) {
-        for (item in owners) {
-            Timber.d(item.name + " cars:")
-            for (item2 in (item.cars).orEmpty()) {
-                Timber.d(item2.brand)
-            }
-        }
+//        for (item in owners) {
+//            Timber.d(item.name + " cars:")
+//            for (item2 in (item.cars).orEmpty()) {
+//                Timber.d(item2.brand)
+//            }
+//        }
 
         adapterOwners.updateOwners(owners)
+    }
+
+    override fun showDeleteOrEditDialog(owner: Owner) {
+        MaterialDialog.Builder(this)
+                .title(R.string.what_do_you_want_to_do_with_owner)
+                .items(R.array.actions_with_owner)
+                .itemsCallbackSingleChoice(-1, MaterialDialog.ListCallbackSingleChoice { dialog, view, which, text ->
+                    when (which) {
+                        0 -> {
+                            Timber.d("edit")
+                        }
+                        1 -> {
+                            Timber.d("delete")
+                            //delete row
+                            (presenter as ListOfOwnersPresenter).deleteOwner(owner)
+
+                        }
+                    }
+                    true
+                })
+                .show()
     }
 }

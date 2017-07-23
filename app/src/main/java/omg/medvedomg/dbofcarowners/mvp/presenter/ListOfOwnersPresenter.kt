@@ -31,6 +31,7 @@ class ListOfOwnersPresenter(var listOfOwnersView: ListOfOwnersView,
         dbHelper.createOwner(owner,cars)
     }
 
-    fun getAllOwners() {
+    fun deleteOwner(owner: Owner) {
+        dbHelper.deleteOwner(owner)
     }
 }

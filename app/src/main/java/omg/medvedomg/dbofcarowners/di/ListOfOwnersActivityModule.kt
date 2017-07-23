@@ -32,8 +32,8 @@ class ListOfOwnersActivityModule {
     }
 
     @Provides
-    fun provideListOfOwnersAdapter(context: Context):ListOfOwnersAdapter{
-        return ListOfOwnersAdapter(context)
+    fun provideListOfOwnersAdapter(context: Context, listOfOwnersView: ListOfOwnersView):ListOfOwnersAdapter{
+        return ListOfOwnersAdapter(context,listOfOwnersView)
     }
 
     @Provides
