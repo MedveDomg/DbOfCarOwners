@@ -31,7 +31,7 @@ class ListOfOwnersAdapter(val context: Context, val listOfOwnersView: ListOfOwne
 
         holder.itemView.setOnClickListener({ Timber.d("click position: $position")})
         holder.itemView.setOnLongClickListener({
-            listOfOwnersView.showDeleteOrEditDialog(owners.get(position))
+            listOfOwnersView.showQuestionActionDialog(owners.get(position))
             true
         })
     }

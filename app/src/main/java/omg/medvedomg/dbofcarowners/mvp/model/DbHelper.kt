@@ -3,6 +3,7 @@ package omg.medvedomg.dbofcarowners.mvp.model
 import android.content.ContentValues
 import android.content.Context
 import android.database.DatabaseErrorHandler
+import android.database.Observable
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -161,6 +162,7 @@ class DbHelper(context: Context, name: String, version: Int) : SQLiteOpenHelper(
     }
 
     fun  deleteOwner(owner: Owner) {
+
         val db = this.writableDatabase
 
         db.delete(OWNER_TABLE_NAME,"$OWNER_ID = ?", arrayOf(owner.id.toString()))
@@ -170,7 +172,10 @@ class DbHelper(context: Context, name: String, version: Int) : SQLiteOpenHelper(
         db.close()
 
         Timber.d("deleting success")
+
     }
 
+    fun updateOwner(owner: Owner, cars: List<Car>) {
 
+    }
 }

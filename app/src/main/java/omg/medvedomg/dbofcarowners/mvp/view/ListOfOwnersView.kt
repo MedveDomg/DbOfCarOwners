@@ -7,5 +7,6 @@ import omg.medvedomg.dbofcarowners.other.models.Owner
  */
 interface ListOfOwnersView {
     fun showOwners(owners: List<Owner>)
-    fun showDeleteOrEditDialog(owner: Owner)
+    fun showQuestionActionDialog(owner: Owner)
+    fun showEditDialog(owner: Owner)
 }

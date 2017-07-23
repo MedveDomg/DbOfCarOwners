@@ -22,7 +22,6 @@ import timber.log.Timber
 import javax.inject.Inject
 
 
-
 class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
 
 
@@ -53,6 +52,22 @@ class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
+        getOwnerEditDialog(null)
+
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun getOwnerEditDialog(owner: Owner?) {
+
+        var edit = false
+
+        if (owner != null) {
+            edit = true
+        }
+
+        Timber.d("edit: $edit")
+
         val dialog = MaterialDialog.Builder(this)
                 .title(R.string.do_you_want_to_add_an_owner)
                 .customView(R.layout.add_owner_dialog, true)
@@ -60,10 +75,15 @@ class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
                 .negativeText(R.string.cancel)
                 .show();
 
+        dialog.view.etName.setText(owner?.name ?: "")
+        dialog.view.etCar0.setText(owner?.cars?.get(0)?.brand ?: "")
+        dialog.view.etCar1.setText(owner?.cars?.get(1)?.brand ?: "")
+        dialog.view.etCar2.setText(owner?.cars?.get(2)?.brand ?: "")
+
         //set clicked on positive button
         dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener(View.OnClickListener {
 
-            var owner = Owner(null,dialog.view.etName?.text?.toString(),null)
+            var owner = Owner(null, dialog.view.etName?.text?.toString(), null)
 
             var carList: ArrayList<Car> = ArrayList()
 
@@ -71,16 +91,18 @@ class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
             carList.add(Car(dialog.view.etCar1.text?.toString()))
             carList.add(Car(dialog.view.etCar2.text?.toString()))
 
-            (presenter as ListOfOwnersPresenter).saveOwner(owner,
-                    carList)
+            if (edit) {
+                Timber.d("edit")
+            } else {
+                (presenter as ListOfOwnersPresenter).saveOwner(owner,
+                        carList)
+            }
+
 
             dialog.dismiss()
         })
 
         dialog.getActionButton(DialogAction.NEGATIVE).setOnClickListener({ dialog.dismiss() })
-
-
-        return super.onOptionsItemSelected(item)
     }
 
     override fun showOwners(owners: List<Owner>) {
@@ -94,7 +116,7 @@ class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
         adapterOwners.updateOwners(owners)
     }
 
-    override fun showDeleteOrEditDialog(owner: Owner) {
+    override fun showQuestionActionDialog(owner: Owner) {
         MaterialDialog.Builder(this)
                 .title(R.string.what_do_you_want_to_do_with_owner)
                 .items(R.array.actions_with_owner)
@@ -102,6 +124,7 @@ class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
                     when (which) {
                         0 -> {
                             Timber.d("edit")
+                            getOwnerEditDialog(owner)
                         }
                         1 -> {
                             Timber.d("delete")
@@ -113,5 +136,9 @@ class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
                     true
                 })
                 .show()
+    }
+
+    override fun showEditDialog(owner: Owner) {
+        getOwnerEditDialog(owner)
     }
 }
