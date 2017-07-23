@@ -43,5 +43,6 @@ class ListOfOwnersAdapter(val context: Context, val listOfOwnersView: ListOfOwne
     fun  updateOwners(owners: List<Owner>) {
         this.owners.clear()
         this.owners.addAll(owners)
+        notifyDataSetChanged()
     }
 }

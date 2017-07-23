@@ -2,6 +2,7 @@ package omg.medvedomg.dbofcarowners.ui
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Looper
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
@@ -23,8 +24,6 @@ import javax.inject.Inject
 
 
 class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
-
-
 
     @Inject lateinit var linearLayoutManager: LinearLayoutManager
     @Inject lateinit var presenter: Presenter
@@ -54,7 +53,6 @@ class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
 
         getOwnerEditDialog(null)
 
-
         return super.onOptionsItemSelected(item)
     }
 
@@ -65,8 +63,6 @@ class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
         if (owner != null) {
             edit = true
         }
-
-        Timber.d("edit: $edit")
 
         val dialog = MaterialDialog.Builder(this)
                 .title(R.string.do_you_want_to_add_an_owner)
@@ -85,10 +81,6 @@ class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
 
             owner?.name =  dialog.view.etName.text.toString()
 
-            if (!edit) {
-                var owner = Owner(null, dialog.view.etName?.text?.toString(), null)
-            }
-
             var carList: ArrayList<Car> = ArrayList()
 
             carList.add(Car(dialog.view.etCar0.text?.toString()))
@@ -96,11 +88,10 @@ class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
             carList.add(Car(dialog.view.etCar2.text?.toString()))
 
             if (edit) {
-                Timber.d("edit: " + owner?.name)
-
                 (presenter as ListOfOwnersPresenter).updateOwner(owner,
                         carList)
             } else {
+                var owner = Owner(null, dialog.view.etName?.text?.toString(), null)
                 (presenter as ListOfOwnersPresenter).saveOwner(owner,
                         carList)
             }
@@ -113,13 +104,6 @@ class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
     }
 
     override fun showOwners(owners: List<Owner>) {
-//        for (item in owners) {
-//            Timber.d(item.name + " cars:")
-//            for (item2 in (item.cars).orEmpty()) {
-//                Timber.d(item2.brand)
-//            }
-//        }
-
         adapterOwners.updateOwners(owners)
     }
 
@@ -130,11 +114,9 @@ class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
                 .itemsCallbackSingleChoice(-1, MaterialDialog.ListCallbackSingleChoice { dialog, view, which, text ->
                     when (which) {
                         0 -> {
-                            Timber.d("edit")
                             getOwnerEditDialog(owner)
                         }
                         1 -> {
-                            Timber.d("delete")
                             //delete row
                             (presenter as ListOfOwnersPresenter).deleteOwner(owner)
 

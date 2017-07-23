@@ -7,6 +7,7 @@ import android.database.Observable
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.os.Looper
 import omg.medvedomg.dbofcarowners.other.models.Car
 import omg.medvedomg.dbofcarowners.other.models.Owner
 import timber.log.Timber
@@ -108,7 +109,7 @@ class DbHelper(context: Context, name: String, version: Int) : SQLiteOpenHelper(
     }
 
     fun getAllOwners(): List<Owner>{
-
+        
         var ownerList: ArrayList<Owner> = ArrayList()
 
         val selectAllOwnersQuery = "SELECT * FROM $OWNER_TABLE_NAME"
@@ -174,6 +175,7 @@ class DbHelper(context: Context, name: String, version: Int) : SQLiteOpenHelper(
     }
 
     fun updateOwner(owner: Owner?, cars: List<Car>) {
+
         val db = this.writableDatabase
 
         val values = ContentValues()
@@ -186,6 +188,8 @@ class DbHelper(context: Context, name: String, version: Int) : SQLiteOpenHelper(
         for (item in cars) {
             createCarWithOwner((owner?.id)!!.toLong(), item)
         }
+
+        db.close()
 
         Timber.d("editing success")
     }
