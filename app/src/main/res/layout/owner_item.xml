@@ -15,7 +15,7 @@
         android:id="@+id/tvOwnerName"
         android:textColor="@color/black"
         android:gravity="center"
-        android:layout_width="695dp"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
         android:ellipsize="end"
         android:singleLine="true"
