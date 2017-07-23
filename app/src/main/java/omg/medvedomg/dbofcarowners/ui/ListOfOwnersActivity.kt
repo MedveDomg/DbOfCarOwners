@@ -83,7 +83,11 @@ class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
         //set clicked on positive button
         dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener(View.OnClickListener {
 
-            var owner = Owner(null, dialog.view.etName?.text?.toString(), null)
+            owner?.name =  dialog.view.etName.text.toString()
+
+            if (!edit) {
+                var owner = Owner(null, dialog.view.etName?.text?.toString(), null)
+            }
 
             var carList: ArrayList<Car> = ArrayList()
 
@@ -92,7 +96,10 @@ class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
             carList.add(Car(dialog.view.etCar2.text?.toString()))
 
             if (edit) {
-                Timber.d("edit")
+                Timber.d("edit: " + owner?.name)
+
+                (presenter as ListOfOwnersPresenter).updateOwner(owner,
+                        carList)
             } else {
                 (presenter as ListOfOwnersPresenter).saveOwner(owner,
                         carList)

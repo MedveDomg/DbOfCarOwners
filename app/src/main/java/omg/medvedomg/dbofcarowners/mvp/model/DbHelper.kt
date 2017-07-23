@@ -70,11 +70,11 @@ class DbHelper(context: Context, name: String, version: Int) : SQLiteOpenHelper(
         onCreate(db)
     }
 
-    fun createOwner(owner: Owner, cars: List<Car>): Long {
+    fun createOwner(owner: Owner?, cars: List<Car>): Long {
         val db = this.writableDatabase
 
         var valuesOwner = ContentValues()
-        valuesOwner.put(OWNER_NAME,owner.name)
+        valuesOwner.put(OWNER_NAME,owner?.name)
 
         //insert owner
         val ownerId = db.insert(OWNER_TABLE_NAME,null,valuesOwner)
@@ -167,15 +167,26 @@ class DbHelper(context: Context, name: String, version: Int) : SQLiteOpenHelper(
 
         db.delete(OWNER_TABLE_NAME,"$OWNER_ID = ?", arrayOf(owner.id.toString()))
 
-        db.delete(CAR_TABLE_NAME,"$CAR_OWNER_ID = ?", arrayOf(owner.id.toString()))
-
         db.close()
 
         Timber.d("deleting success")
 
     }
 
-    fun updateOwner(owner: Owner, cars: List<Car>) {
+    fun updateOwner(owner: Owner?, cars: List<Car>) {
+        val db = this.writableDatabase
 
+        val values = ContentValues()
+        values.put(OWNER_NAME,owner?.name)
+
+        db.update(OWNER_TABLE_NAME,values,"$OWNER_ID = ?", arrayOf(owner?.id.toString()))
+
+        db.delete(CAR_TABLE_NAME,"$CAR_OWNER_ID = ?", arrayOf(owner?.id.toString()))
+
+        for (item in cars) {
+            createCarWithOwner((owner?.id)!!.toLong(), item)
+        }
+
+        Timber.d("editing success")
     }
 }

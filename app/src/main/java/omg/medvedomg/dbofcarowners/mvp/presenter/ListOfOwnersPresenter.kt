@@ -20,18 +20,22 @@ class ListOfOwnersPresenter(var listOfOwnersView: ListOfOwnersView,
         listOfOwnersView.showOwners(owners)
     }
 
-    fun saveOwner(owner: Owner, cars: List<Car>){
+    fun saveOwner(owner: Owner?, cars: List<Car>){
 
         for (item in cars) {
             println(item.brand.toString())
         }
 
-        println(owner.name)
+        println(owner?.name)
 
         dbHelper.createOwner(owner,cars)
     }
 
     fun deleteOwner(owner: Owner) {
         dbHelper.deleteOwner(owner)
+    }
+
+    fun updateOwner(owner: Owner?, cars: List<Car>) {
+        dbHelper.updateOwner(owner,cars)
     }
 }
