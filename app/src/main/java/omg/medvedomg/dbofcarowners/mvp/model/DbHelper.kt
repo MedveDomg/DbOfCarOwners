@@ -19,18 +19,18 @@ import timber.log.Timber
 class DbHelper(context: Context, name: String, version: Int) : SQLiteOpenHelper(context, name, null, version) {
 
         //ONWER TABLE
-        val OWNER_TABLE_NAME = "owner"
-        val OWNER_ID = "owner_id"
-        val OWNER_NAME = "owner_name"
+        public val OWNER_TABLE_NAME = "owner"
+        public val OWNER_ID = "owner_id"
+        public val OWNER_NAME = "owner_name"
 
         //CAR TABLE
-        val CAR_TABLE_NAME = "car"
-        val CAR_ID = "car_id"
-        val CAR_OWNER_ID = "car_owner_id"
-        val CAR_BRAND = "car_brand"
-        val CAR_MODEL = "car_model"
-        val CAR_COLOR = "car_color"
-        val CAR_AGE = "car_age"
+        public  val CAR_TABLE_NAME = "car"
+        public  val CAR_ID = "car_id"
+        public  val CAR_OWNER_ID = "car_owner_id"
+        public  val CAR_BRAND = "car_brand"
+        public  val CAR_MODEL = "car_model"
+        public  val CAR_COLOR = "car_color"
+        public  val CAR_AGE = "car_age"
 
     override fun onCreate(db: SQLiteDatabase) {
         createTable(db)

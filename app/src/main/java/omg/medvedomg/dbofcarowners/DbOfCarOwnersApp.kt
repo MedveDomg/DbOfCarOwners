@@ -24,7 +24,7 @@ class DbOfCarOwnersApp : Application(),HasActivityInjector{
 
         //logging library
         Timber.plant(Timber.DebugTree())
-
+        
         DaggerAppComponent
                 .builder()
                 .application(this)

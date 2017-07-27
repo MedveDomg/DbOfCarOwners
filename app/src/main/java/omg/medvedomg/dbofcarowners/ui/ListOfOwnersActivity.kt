@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -38,7 +39,7 @@ class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
 
         rvOwners.apply {
             setHasFixedSize(true)
-            layoutManager = linearLayoutManager
+            layoutManager = linearLayoutManager as RecyclerView.LayoutManager?
             rvOwners.adapter = adapterOwners
         }
 
@@ -104,6 +105,15 @@ class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
     }
 
     override fun showOwners(owners: List<Owner>) {
+
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            // Current Thread is Main Thread.
+            Timber.d("UI THREAD")
+        } else {
+            Timber.d("BACKGROUND THREAD")
+
+        }
+
         adapterOwners.updateOwners(owners)
     }
 

@@ -18,4 +18,5 @@ class OwnerInformationViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(pa
         tvOwnerName.text = item?.name?.toString()?.addHas()
         tvOwnersCars.text = item?.cars?.getAllNamesInOneString()
     }
+
 }

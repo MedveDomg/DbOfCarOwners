@@ -4,6 +4,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import omg.medvedomg.dbofcarowners.mvp.model.DbHelper
+import omg.medvedomg.dbofcarowners.other.repository.*
 import javax.inject.Singleton
 
 /**
@@ -16,6 +17,30 @@ class DbModule {
     @Singleton
     fun provideDb(context: Context) : DbHelper{
         return DbHelper(context,"Owners",1)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCursorToOwnersMapper() : CursorToOwnersMapper{
+        return CursorToOwnersMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCursorToCarsMapper() : CursorToCarsMapper{
+        return CursorToCarsMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideOwnersToContentValuesMapper() : OwnersToContentValuesMapper {
+        return OwnersToContentValuesMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRepository(dbHelper: DbHelper) : OwnersRepository {
+        return OwnersRepository(dbHelper)
     }
 
 }
