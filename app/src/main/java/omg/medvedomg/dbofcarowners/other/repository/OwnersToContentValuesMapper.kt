@@ -1,6 +1,7 @@
 package omg.medvedomg.dbofcarowners.other.repository
 
 import android.content.ContentValues
+import omg.medvedomg.dbofcarowners.other.OWNER_ID
 import omg.medvedomg.dbofcarowners.other.OWNER_NAME
 import omg.medvedomg.dbofcarowners.other.models.Owner
 
@@ -12,6 +13,7 @@ class OwnersToContentValuesMapper : Mapper<omg.medvedomg.dbofcarowners.other.mod
 
         var valuesOwner = ContentValues()
         valuesOwner.put(OWNER_NAME,from?.name)
+        valuesOwner.put(OWNER_ID,from?.id)
 
         return valuesOwner
     }

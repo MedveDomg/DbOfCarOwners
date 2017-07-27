@@ -8,10 +8,7 @@ import omg.medvedomg.dbofcarowners.other.models.Owner
 import java.util.*
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
-import omg.medvedomg.dbofcarowners.other.CAR_BRAND
-import omg.medvedomg.dbofcarowners.other.CAR_OWNER_ID
-import omg.medvedomg.dbofcarowners.other.CAR_TABLE_NAME
-import omg.medvedomg.dbofcarowners.other.OWNER_TABLE_NAME
+import omg.medvedomg.dbofcarowners.other.*
 import omg.medvedomg.dbofcarowners.other.models.Car
 import omg.medvedomg.dbofcarowners.other.repository.specification.Specification
 import omg.medvedomg.dbofcarowners.other.repository.specification.SqlSpecification
@@ -42,6 +39,7 @@ class OwnersRepository(val dbHelper: DbHelper) : Repository<Owner>{
 
     override fun add(items: Iterable<Owner>) : Observable<Any>{
         return Observable.fromCallable(Callable {
+
             val database = dbHelper.getWritableDatabase()
             database.beginTransaction()
 
@@ -49,7 +47,12 @@ class OwnersRepository(val dbHelper: DbHelper) : Repository<Owner>{
                 for (item in items) {
                     val contentValues = toContentValuesMapper.map(item)
 
-                    database.insert(OWNER_TABLE_NAME, null, contentValues)
+
+                    val ownerId = database.insert(OWNER_TABLE_NAME, null, contentValues)
+
+                    for (item in item.cars!!) {
+                        createCarWithOwner(ownerId, item)
+                    }
                 }
 
                 database.setTransactionSuccessful()
@@ -61,12 +64,47 @@ class OwnersRepository(val dbHelper: DbHelper) : Repository<Owner>{
 
     }
 
-    override fun update(item: Owner) : Observable<Any> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun update(owner: Owner) : Observable<Any> {
+
+        return Observable.fromCallable(Callable {
+            val db = dbHelper.writableDatabase
+
+            val values = ContentValues()
+            values.put(OWNER_NAME,owner?.name)
+
+            db.update(OWNER_TABLE_NAME,values,"$OWNER_ID = ?", arrayOf(owner?.id.toString()))
+
+            db.delete(CAR_TABLE_NAME,"$CAR_OWNER_ID = ?", arrayOf(owner?.id.toString()))
+
+            for (item in owner.cars!!) {
+                createCarWithOwner((owner?.id)!!.toLong(), item)
+            }
+
+            db.close()
+        })
     }
 
-    override fun remove(item: Owner) : Observable<Any>{
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun remove(owner: Owner) : Observable<Any>{
+
+        return Observable.fromCallable(Callable {
+            val db = dbHelper.writableDatabase
+
+            db.delete(OWNER_TABLE_NAME,"$OWNER_ID = ?", arrayOf(owner.id.toString()))
+
+            db.delete(CAR_TABLE_NAME,"$CAR_OWNER_ID = ?", arrayOf(owner?.id.toString()))
+
+            db.close()
+
+            if (Looper.myLooper() == Looper.getMainLooper()) {
+                // Current Thread is Main Thread.;
+                Timber.d("UI THREAD")
+            } else {
+                Timber.d("BACKGROUND THREAD")
+
+            }
+        })
+
+
     }
 
     override fun remove(specification: Specification?) : Observable<Any>{
@@ -152,4 +190,18 @@ class OwnersRepository(val dbHelper: DbHelper) : Repository<Owner>{
         return carList
     }
 
+    fun createCarWithOwner(ownerId: Long, car: Car): Long{
+        val db = dbHelper.writableDatabase
+
+        var values = ContentValues()
+        values.put(CAR_BRAND,car.brand)
+        values.put(CAR_OWNER_ID,ownerId)
+
+        //insert owner
+        val carId = db.insert(CAR_TABLE_NAME,null,values)
+
+        Timber.d("added car: " + car.brand)
+
+        return carId
+    }
 }

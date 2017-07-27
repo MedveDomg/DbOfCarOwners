@@ -179,6 +179,7 @@ class DbHelper(context: Context, name: String, version: Int) : SQLiteOpenHelper(
         val db = this.writableDatabase
 
         val values = ContentValues()
+
         values.put(OWNER_NAME,owner?.name)
 
         db.update(OWNER_TABLE_NAME,values,"$OWNER_ID = ?", arrayOf(owner?.id.toString()))

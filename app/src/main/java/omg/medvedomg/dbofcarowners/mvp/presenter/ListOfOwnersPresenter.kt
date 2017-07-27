@@ -1,27 +1,25 @@
 package omg.medvedomg.dbofcarowners.mvp.presenter
 
-import android.content.Context
-import io.reactivex.Observable
 import omg.medvedomg.dbofcarowners.mvp.view.ListOfOwnersView
 import omg.medvedomg.dbofcarowners.other.models.Car
 import omg.medvedomg.dbofcarowners.other.models.Owner
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
-import omg.medvedomg.dbofcarowners.mvp.model.DbHelper
 import omg.medvedomg.dbofcarowners.other.repository.OwnersRepository
 import omg.medvedomg.dbofcarowners.other.repository.specification.AllOwnersSpecification
+import java.util.*
 
 
 /**
  * Created by medvedomg on 22.07.17.
  */
 class ListOfOwnersPresenter(var listOfOwnersView: ListOfOwnersView,
-                            var ownersSqlRepository: OwnersRepository) : Presenter{
+                            var ownersRepository: OwnersRepository) : Presenter{
 //
     fun getListOfOwners() {
 
-        ownersSqlRepository.query(AllOwnersSpecification())
+        ownersRepository.query(AllOwnersSpecification())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(Consumer {
@@ -37,19 +35,12 @@ class ListOfOwnersPresenter(var listOfOwnersView: ListOfOwnersView,
 //                .subscribe()
     }
 
-    fun saveOwner(owner: Owner, cars: List<Car>){
+    fun saveOwner(owner: Owner){
 
-//        ownersSqlRepository.add(Collections.singletonList(owner))
-//                    .subscribeOn(Schedulers.io())
-//                    .subscribeOn(Schedulers.io())
-//                .conc
-//                    .map { convert ->  dbHelper.getAllOwners()}
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .map { list ->   listOfOwnersView.showOwners(list)}
-//                    .subscribe()
-
-
-
+        ownersRepository.add(Collections.singletonList(owner))
+                    .subscribeOn(Schedulers.io())
+                    .map { convert ->  getListOfOwners()}
+                    .subscribe()
 
                     //OLD VARIANT
 //                Observable.fromCallable({
@@ -63,6 +54,11 @@ class ListOfOwnersPresenter(var listOfOwnersView: ListOfOwnersView,
     }
 
     fun deleteOwner(owner: Owner) {
+        ownersRepository.remove(owner)
+                .subscribeOn(Schedulers.io())
+                .map { convert ->  getListOfOwners()}
+                .subscribe()
+
 //                Observable.fromCallable({
 //                    dbHelper.deleteOwner(owner)
 //                })
@@ -73,7 +69,13 @@ class ListOfOwnersPresenter(var listOfOwnersView: ListOfOwnersView,
 //                .subscribe()
     }
 
-    fun updateOwner(owner: Owner?, cars: List<Car>) {
+    fun updateOwner(owner: Owner) {
+
+        ownersRepository.update(owner)
+                .subscribeOn(Schedulers.io())
+                .map { convert ->  getListOfOwners()}
+                .subscribe()
+
 //                Observable.fromCallable({
 //                    dbHelper.updateOwner(owner,cars)
 //                })

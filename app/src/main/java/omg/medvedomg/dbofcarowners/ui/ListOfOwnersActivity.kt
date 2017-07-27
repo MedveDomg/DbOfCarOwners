@@ -88,13 +88,13 @@ class ListOfOwnersActivity : AppCompatActivity(),ListOfOwnersView {
             carList.add(Car(dialog.view.etCar1.text?.toString()))
             carList.add(Car(dialog.view.etCar2.text?.toString()))
 
+            owner?.cars = carList
+
             if (edit) {
-                (presenter as ListOfOwnersPresenter).updateOwner(owner,
-                        carList)
+                (presenter as ListOfOwnersPresenter).updateOwner(owner!!)
             } else {
-                var owner = Owner(null, dialog.view.etName?.text?.toString(), null)
-                (presenter as ListOfOwnersPresenter).saveOwner(owner,
-                        carList)
+                var owner = Owner(null, dialog.view.etName?.text?.toString(), carList)
+                (presenter as ListOfOwnersPresenter).saveOwner(owner)
             }
 
 
