@@ -36,7 +36,7 @@ class ListOfOwnersActivityModule {
 
     @Provides
     fun provideListOfOwnersPresenter(listOfOwnersView: ListOfOwnersView,
-                                     ownersSqlRepository: OwnersRepository) : Presenter{
-        return ListOfOwnersPresenter(listOfOwnersView, ownersSqlRepository)
+                                     dbHelper: DbHelper) : Presenter{
+        return ListOfOwnersPresenter(listOfOwnersView, dbHelper)
     }
 }
