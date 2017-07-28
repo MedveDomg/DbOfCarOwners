@@ -26,13 +26,6 @@ class ListOfOwnersPresenter(var listOfOwnersView: ListOfOwnersView,
                     listOfOwnersView.showOwners(it)
                 })
 
-//        Observable.fromCallable({dbHelper.getAllOwners()})
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .map ({ list ->
-//                    listOfOwnersView.showOwners(list)
-//                })
-//                .subscribe()
     }
 
     fun saveOwner(owner: Owner){
@@ -42,15 +35,6 @@ class ListOfOwnersPresenter(var listOfOwnersView: ListOfOwnersView,
                     .map { convert ->  getListOfOwners()}
                     .subscribe()
 
-                    //OLD VARIANT
-//                Observable.fromCallable({
-//                            dbHelper.createOwner(owner,cars)
-//                        })
-//                .subscribeOn(Schedulers.io())
-//                .map { convert ->  dbHelper.getAllOwners()}
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .map { list ->   listOfOwnersView.showOwners(list)}
-//                .subscribe()
     }
 
     fun deleteOwner(owner: Owner) {
@@ -59,14 +43,6 @@ class ListOfOwnersPresenter(var listOfOwnersView: ListOfOwnersView,
                 .map { convert ->  getListOfOwners()}
                 .subscribe()
 
-//                Observable.fromCallable({
-//                    dbHelper.deleteOwner(owner)
-//                })
-//                .subscribeOn(Schedulers.io())
-//                .map { convert ->  dbHelper.getAllOwners()}
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .map { list ->   listOfOwnersView.showOwners(list)}
-//                .subscribe()
     }
 
     fun updateOwner(owner: Owner) {
@@ -76,13 +52,5 @@ class ListOfOwnersPresenter(var listOfOwnersView: ListOfOwnersView,
                 .map { convert ->  getListOfOwners()}
                 .subscribe()
 
-//                Observable.fromCallable({
-//                    dbHelper.updateOwner(owner,cars)
-//                })
-//                .subscribeOn(Schedulers.io())
-//                .map { convert ->  dbHelper.getAllOwners()}
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .map { list ->   listOfOwnersView.showOwners(list)}
-//                .subscribe()
     }
 }
