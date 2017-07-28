@@ -10,6 +10,7 @@ Used Technologies:
 5)Material Dialogs
 
 There are two branches:
+
 1)master - use simple methods from DbHelper to make DB requests
 
 2) repository - use repository pattern to interact with DB
